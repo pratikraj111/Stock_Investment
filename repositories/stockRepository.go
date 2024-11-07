@@ -35,4 +35,14 @@ func (r *StockRepository) ListStocks() ([]models.Stock, error) {
 	return stocks, nil
 }
 
-// Additional methods for getting, updating, and deleting stocks can be defined here.
+func (r *StockRepository) UpdateStock(stock *models.Stock) error {
+	query := "UPDATE stocks SET name = ?, price = ?, quantity = ? WHERE id = ?"
+	_, err := r.DB.Exec(query, stock.Name, stock.Price, stock.Quantity, stock.ID)
+	return err
+}
+
+func (r *StockRepository) DeleteStock(id int) error {
+	query := "DELETE FROM stocks WHERE id = ?"
+	_, err := r.DB.Exec(query, id)
+	return err
+}

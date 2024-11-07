@@ -4,7 +4,6 @@ import (
 	"go-stock-app/models"
 	"go-stock-app/services"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )

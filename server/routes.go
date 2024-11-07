@@ -1,6 +1,7 @@
 package server
 
 import (
+	"database/sql"
 	"go-stock-app/controllers"
 	"go-stock-app/repositories"
 	"go-stock-app/services"
@@ -19,6 +20,17 @@ func SetupRoutes(router *gin.Engine, db *sql.DB) {
 	stockController := &controllers.StockController{Service: stockService}
 	orderController := &controllers.OrderController{Service: orderService}
 
-	router.POST("/api/admin/stocks", stockController.CreateStock)
-	router.POST("/api/user/orders", orderController.PlaceOrder)
+	admin := router.Group("/api/admin")
+	{
+		admin.POST("/stocks", stockController.CreateStock)
+		admin.GET("/stocks", stockController.ListStocks)
+		admin.PUT("/stocks", stockController.UpdateStock)
+		admin.DELETE("/stocks/:id", stockController.DeleteStock)
+	}
+
+	user := router.Group("/api/user")
+	{
+		user.GET("/stocks", stockController.ListStocks)
+		user.POST("/orders", orderController.PlaceOrder)
+	}
 }
